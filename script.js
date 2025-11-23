@@ -1,13 +1,13 @@
 // SEO Meta Tags
 const seoMeta = {
     it: {
-        title: 'Autolaggi Nova - Autolavaggio Professionale in Emilia-Romagna',
-        description: 'Autolaggi Nova: autolavaggio con operatori a Modena, Sassuolo, Rubiera e Limidi di Soliera. Servizi professionali, orari convenienti e qualità garantita.',
+        title: 'Nova Autolavaggi - Autolavaggio Professionale in Emilia-Romagna',
+        description: 'Nova Autolavaggi: autolavaggio con operatori a Modena, Sassuolo, Rubiera e Limidi di Soliera. Servizi professionali, orari convenienti e qualità garantita.',
         keywords: 'autolavaggio Modena, lavaggio auto Sassuolo, autolavaggio Rubiera, lavaggio auto Limidi di Soliera, pulizia auto Emilia-Romagna'
     },
     en: {
-        title: 'Autolaggi Nova - Professional Car Wash in Emilia-Romagna',
-        description: 'Autolaggi Nova: car wash with operators in Modena, Sassuolo, Rubiera and Limidi di Soliera. Professional services, convenient hours and guaranteed quality.',
+        title: 'Nova Autolavaggi - Professional Car Wash in Emilia-Romagna',
+        description: 'Nova Autolavaggi: car wash with operators in Modena, Sassuolo, Rubiera and Limidi di Soliera. Professional services, convenient hours and guaranteed quality.',
         keywords: 'car wash Modena, car cleaning Sassuolo, auto wash Rubiera, car detailing Limidi di Soliera, vehicle care Emilia-Romagna'
     }
 };
@@ -31,7 +31,7 @@ const searchData = {
 // Translation system
 const translations = {
     it: {
-        'hero.title': 'Autolaggi Nova',
+        'hero.title': 'Nova Autolavaggi',
         'hero.subtitle': 'La tua auto merita il meglio. Servizi di autolavaggio professionale con operatori specializzati in tutta l\'Emilia-Romagna.',
         'hero.hours': 'Aperto Lun-Sab: 8:00-19:00 | Dom: 8:00-13:00',
         'hero.btn1': 'Trova la sede più vicina',
@@ -96,9 +96,9 @@ const translations = {
         'contact.cta.subtitle': 'La tua auto merita il trattamento migliore. Prenota o passa direttamente in una delle nostre sedi.',
         'contact.cta.btn1': 'Trova la sede più vicina',
         'contact.cta.btn2': 'Chiama ora',
-        'footer.brand.title': 'Autolaggi Nova',
+        'footer.brand.title': 'Nova Autolavaggi',
         'footer.brand.desc': 'Servizi professionali di autolavaggio con operatori in Emilia-Romagna.',
-        'footer.brand.copyright': '© 2025 Autolaggi Nova. Tutti i diritti riservati.',
+        'footer.brand.copyright': '© 2025 Nova Autolavaggi. Tutti i diritti riservati.',
         'footer.contacts.title': 'Contatti',
         'search.title': 'Cerca',
         'search.placeholder': 'Cerca le sedi...',
@@ -106,7 +106,7 @@ const translations = {
         'loading.text': 'Caricamento...'
     },
     en: {
-        'hero.title': 'Autolaggi Nova',
+        'hero.title': 'Nova Autolavaggi',
         'hero.subtitle': 'Your car deserves the best. Professional car wash services with specialized operators throughout Emilia-Romagna.',
         'hero.hours': 'Open Mon-Sat: 8:00-19:00 | Sun: 8:00-13:00',
         'hero.btn1': 'Find nearest location',
@@ -171,9 +171,9 @@ const translations = {
         'contact.cta.subtitle': 'Your car deserves the best treatment. Book or visit us directly at one of our locations.',
         'contact.cta.btn1': 'Find nearest location',
         'contact.cta.btn2': 'Call now',
-        'footer.brand.title': 'Autolaggi Nova',
+        'footer.brand.title': 'Nova Autolavaggi',
         'footer.brand.desc': 'Professional car wash services with operators in Emilia-Romagna.',
-        'footer.brand.copyright': '© 2025 Autolaggi Nova. All rights reserved.',
+        'footer.brand.copyright': '© 2025 Nova Autolavaggi. All rights reserved.',
         'footer.contacts.title': 'Contacts',
         'search.title': 'Search',
         'search.placeholder': 'Search locations...',
