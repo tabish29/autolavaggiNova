@@ -372,18 +372,45 @@ body {
 .loading-content {
     text-align: center;
     color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .loading-spinner {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    animation: spin 2s linear infinite;
-    color: var(--accent-color);
+    display: flex;
+    gap: 8px;
+    margin-top: 1rem;
+    justify-content: center;
+}
+
+.loading-spinner .dot {
+    width: 12px;
+    height: 12px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    animation: loadingDots 1.5s ease-in-out infinite;
+}
+
+.loading-spinner .dot:nth-child(1) { animation-delay: 0s; }
+.loading-spinner .dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-spinner .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes loadingDots {
+    0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
 }
 
 .loading-content h2 {
     font-size: 2rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
     color: var(--accent-color);
 }
 
@@ -392,9 +419,15 @@ body {
     opacity: 0.8;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+@keyframes loadingDots {
+    0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
 }
 
 /* Back to Top Button */
