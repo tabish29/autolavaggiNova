@@ -1,3 +1,33 @@
+// SEO Meta Tags
+const seoMeta = {
+    it: {
+        title: 'Autolaggi Nova - Autolavaggio Professionale in Emilia-Romagna',
+        description: 'Autolaggi Nova: autolavaggio con operatori a Modena, Sassuolo, Rubiera e Limidi di Soliera. Servizi professionali, orari convenienti e qualità garantita.',
+        keywords: 'autolavaggio Modena, lavaggio auto Sassuolo, autolavaggio Rubiera, lavaggio auto Limidi di Soliera, pulizia auto Emilia-Romagna'
+    },
+    en: {
+        title: 'Autolaggi Nova - Professional Car Wash in Emilia-Romagna',
+        description: 'Autolaggi Nova: car wash with operators in Modena, Sassuolo, Rubiera and Limidi di Soliera. Professional services, convenient hours and guaranteed quality.',
+        keywords: 'car wash Modena, car cleaning Sassuolo, auto wash Rubiera, car detailing Limidi di Soliera, vehicle care Emilia-Romagna'
+    }
+};
+
+// Search Data - Solo sedi con ID mapping
+const searchData = {
+    it: [
+        { title: 'Modena', desc: 'Stazione servizio Q8 - Strada Morane, 338', section: 'locations', link: '#locations', id: 'location-modena' },
+        { title: 'Rubiera', desc: 'Stazione servizio Eni - Via Contea, 20', section: 'locations', link: '#locations', id: 'location-rubiera' },
+        { title: 'Limidi di Soliera', desc: 'Stazione servizio Q8 - Via Ravarino per Carpi, 141', section: 'locations', link: '#locations', id: 'location-limidi' },
+        { title: 'Sassuolo', desc: 'Stazione servizio Q8 - Via Radici in Piano, 503', section: 'locations', link: '#locations', id: 'location-sassuolo' }
+    ],
+    en: [
+        { title: 'Modena', desc: 'Q8 Gas Station - Strada Morane, 338', section: 'locations', link: '#locations', id: 'location-modena' },
+        { title: 'Rubiera', desc: 'Eni Gas Station - Via Contea, 20', section: 'locations', link: '#locations', id: 'location-rubiera' },
+        { title: 'Limidi di Soliera', desc: 'Q8 Gas Station - Via Ravarino per Carpi, 141', section: 'locations', link: '#locations', id: 'location-limidi' },
+        { title: 'Sassuolo', desc: 'Q8 Gas Station - Via Radici in Piano, 503', section: 'locations', link: '#locations', id: 'location-sassuolo' }
+    ]
+};
+
 // Translation system
 const translations = {
     it: {
@@ -69,7 +99,11 @@ const translations = {
         'footer.brand.title': 'Autolaggi Nova',
         'footer.brand.desc': 'Servizi professionali di autolavaggio con operatori in Emilia-Romagna.',
         'footer.brand.copyright': '© 2025 Autolaggi Nova. Tutti i diritti riservati.',
-        'footer.contacts.title': 'Contatti'
+        'footer.contacts.title': 'Contatti',
+        'search.title': 'Cerca',
+        'search.placeholder': 'Cerca le sedi...',
+        'search.no_results': 'Nessuna sede trovata',
+        'loading.text': 'Caricamento...'
     },
     en: {
         'hero.title': 'Autolaggi Nova',
@@ -140,7 +174,11 @@ const translations = {
         'footer.brand.title': 'Autolaggi Nova',
         'footer.brand.desc': 'Professional car wash services with operators in Emilia-Romagna.',
         'footer.brand.copyright': '© 2025 Autolaggi Nova. All rights reserved.',
-        'footer.contacts.title': 'Contacts'
+        'footer.contacts.title': 'Contacts',
+        'search.title': 'Search',
+        'search.placeholder': 'Search locations...',
+        'search.no_results': 'No locations found',
+        'loading.text': 'Loading...'
     }
 };
 
@@ -150,6 +188,11 @@ function updateLanguage(lang) {
     currentLang = lang;
     document.documentElement.lang = lang;
     document.getElementById('html-lang').lang = lang;
+    
+    // Update SEO meta tags
+    document.getElementById('page-title').textContent = seoMeta[lang].title;
+    document.getElementById('page-description').setAttribute('content', seoMeta[lang].description);
+    document.getElementById('page-keywords').setAttribute('content', seoMeta[lang].keywords);
     
     // Update all elements with data-lang attribute
     document.querySelectorAll('[data-lang]').forEach(element => {
@@ -168,60 +211,207 @@ function updateLanguage(lang) {
     localStorage.setItem('preferredLanguage', lang);
 }
 
-// Language switcher event listeners
-document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const lang = this.getAttribute('data-lang');
-        updateLanguage(lang);
-    });
-});
-
-// Load saved language preference
-const savedLang = localStorage.getItem('preferredLanguage') || 'it';
-updateLanguage(savedLang);
-
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-            
-            // Remove hash from URL without affecting scroll position
-            history.replaceState(null, null, ' ');
-        }
-    });
-});
-
-// Handle browser back/forward buttons
-window.addEventListener('popstate', function(event) {
-    if (event.state === null) {
-        history.replaceState(null, null, ' ');
-    }
-});
-
-// Remove hash on page load if present
-if (window.location.hash) {
-    history.replaceState(null, null, ' ');
-    // Scroll to the section if hash was present
-    const hash = window.location.hash.substring(1);
-    const target = document.getElementById(hash);
-    if (target) {
+// Loading Screen
+function hideLoadingScreen() {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
         setTimeout(() => {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }, 100);
+            loadingScreen.classList.add('hidden');
+        }, 1500); // Show loading for 1.5 seconds
     }
 }
 
-// Auto-start carousel
+// Back to Top Button
+function initBackToTop() {
+    const backToTopBtn = document.getElementById('back-to-top');
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    });
+    
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+// Search Functionality
+function initSearch() {
+    const searchTrigger = document.getElementById('search-trigger');
+    const searchOverlay = document.getElementById('search-overlay');
+    const searchClose = document.getElementById('search-close');
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+    const searchResults = document.getElementById('search-results');
+    
+    // Open search
+    searchTrigger.addEventListener('click', () => {
+        // Update placeholder with current language
+        searchInput.placeholder = translations[currentLang]['search.placeholder'];
+        searchOverlay.classList.add('active');
+        searchInput.focus();
+    });
+    
+    // Close search
+    searchClose.addEventListener('click', () => {
+        searchOverlay.classList.remove('active');
+        searchInput.value = '';
+        searchResults.innerHTML = '';
+    });
+    
+    // Close on overlay click
+    searchOverlay.addEventListener('click', (e) => {
+        if (e.target === searchOverlay) {
+            searchOverlay.classList.remove('active');
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+        }
+    });
+    
+    // Search functionality
+    function performSearch(query) {
+        const results = searchData[currentLang].filter(item => 
+            item.title.toLowerCase().includes(query.toLowerCase()) ||
+            item.desc.toLowerCase().includes(query.toLowerCase())
+        );
+        
+        searchResults.innerHTML = '';
+        
+        if (results.length === 0) {
+            searchResults.innerHTML = `<div class="search-result-item">${translations[currentLang]['search.no_results']}</div>`;
+            return;
+        }
+        
+        results.forEach(item => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+            resultItem.innerHTML = `
+                <div class="search-result-title">${item.title}</div>
+                <div class="search-result-desc">${item.desc}</div>
+            `;
+            resultItem.addEventListener('click', () => {
+                searchOverlay.classList.remove('active');
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+                
+                // Remove any existing highlights
+                document.querySelectorAll('.location-card').forEach(card => {
+                    card.classList.remove('highlighted');
+                });
+                
+                // Navigate to the section
+                window.location.href = item.link;
+                
+                // Highlight the specific location after a short delay
+                setTimeout(() => {
+                    const targetCard = document.getElementById(item.id);
+                    if (targetCard) {
+                        targetCard.classList.add('highlighted');
+                        // Scroll to the highlighted card
+                        targetCard.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                        
+                        // Remove highlight after 5 seconds
+                        setTimeout(() => {
+                            targetCard.classList.remove('highlighted');
+                        }, 5000);
+                    }
+                }, 300);
+            });
+            searchResults.appendChild(resultItem);
+        });
+    }
+    
+    searchBtn.addEventListener('click', () => {
+        performSearch(searchInput.value);
+    });
+    
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            performSearch(searchInput.value);
+        }
+    });
+    
+    // Live search
+    searchInput.addEventListener('input', () => {
+        if (searchInput.value.length > 2) {
+            performSearch(searchInput.value);
+        } else {
+            searchResults.innerHTML = '';
+        }
+    });
+}
+
+// Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
+    // Hide loading screen
+    hideLoadingScreen();
+    
+    // Initialize components
+    initBackToTop();
+    initSearch();
+    
+    // Load saved language preference
+    const savedLang = localStorage.getItem('preferredLanguage') || 'it';
+    updateLanguage(savedLang);
+
+    // Language switcher event listeners
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const lang = this.getAttribute('data-lang');
+            updateLanguage(lang);
+        });
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Remove hash from URL without affecting scroll position
+                history.replaceState(null, null, ' ');
+            }
+        });
+    });
+
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function(event) {
+        if (event.state === null) {
+            history.replaceState(null, null, ' ');
+        }
+    });
+
+    // Remove hash on page load if present
+    if (window.location.hash) {
+        history.replaceState(null, null, ' ');
+        // Scroll to the section if hash was present
+        const hash = window.location.hash.substring(1);
+        const target = document.getElementById(hash);
+        if (target) {
+            setTimeout(() => {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+    }
+
+    // Auto-start carousel
     const carousel = new bootstrap.Carousel(document.getElementById('imageCarousel'), {
         interval: 4000,
         ride: 'carousel'
