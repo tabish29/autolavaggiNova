@@ -390,9 +390,35 @@
                         behavior: 'smooth',
                         block: 'start'
                     });
+                    
+                    // Remove hash from URL without affecting scroll position
+                    history.replaceState(null, null, ' ');
                 }
             });
         });
+        
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            if (event.state === null) {
+                history.replaceState(null, null, ' ');
+            }
+        });
+        
+        // Remove hash on page load if present
+        if (window.location.hash) {
+            history.replaceState(null, null, ' ');
+            // Scroll to the section if hash was present
+            const hash = window.location.hash.substring(1);
+            const target = document.getElementById(hash);
+            if (target) {
+                setTimeout(() => {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 100);
+            }
+        }
         
         // Auto-start carousel
         const carousel = new bootstrap.Carousel(document.getElementById('imageCarousel'), {
