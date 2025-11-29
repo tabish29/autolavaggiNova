@@ -198,14 +198,7 @@ function updateLanguage(lang) {
     document.getElementById('page-description').setAttribute('content', seoMeta[lang].description);
     document.getElementById('page-keywords').setAttribute('content', seoMeta[lang].keywords);
     
-    // Update all elements with data-lang attribute
-    document.querySelectorAll('[data-lang]').forEach(element => {
-        const key = element.getAttribute('data-lang');
-        if (translations[lang] && translations[lang][key]) {
-            element.textContent = translations[lang][key];
-        }
-    });
-
+    
     // Update language buttons
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
@@ -279,7 +272,7 @@ function initAccessibility() {
     
     // Enhanced search functionality with accessibility
     function performSearch(query) {
-        const results = searchData[currentLang].filter(item => 
+        const results = searchData.it.filter(item => 
             item.title.toLowerCase().includes(query.toLowerCase()) ||
             item.desc.toLowerCase().includes(query.toLowerCase())
         );
@@ -290,7 +283,7 @@ function initAccessibility() {
         announceSearchResults(results.length);
         
         if (results.length === 0) {
-            searchResults.innerHTML = `<div class="search-result-item" role="option">${translations[currentLang]['search.no_results']}</div>`;
+            searchResults.innerHTML = `<div class="search-result-item" role="option">Nessuna sede trovata</div>`;
             return;
         }
         
@@ -369,44 +362,145 @@ function initAccessibility() {
         }
     }
     
-    // Trap focus in search modal
-    function trapFocus(element) {
-        const focusableElements = element.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+// Enhanced search functionality with accessibility
+    function performSearch(query) {
+        const results = searchData.it.filter(item => 
+            item.title.toLowerCase().includes(query.toLowerCase()) ||
+            item.desc.toLowerCase().includes(query.toLowerCase())
         );
-        const firstFocusable = focusableElements[0];
-        const lastFocusable = focusableElements[focusableElements.length - 1];
         
-        element.addEventListener('keydown', function(e) {
-            if (e.key === 'Tab') {
-                if (e.shiftKey) {
-                    if (document.activeElement === firstFocusable) {
-                        lastFocusable.focus();
-                        e.preventDefault();
-                    }
-                } else {
-                    if (document.activeElement === lastFocusable) {
-                        firstFocusable.focus();
-                        e.preventDefault();
-                    }
+        const searchResults = document.getElementById('search-results');
+        searchResults.innerHTML = '';
+        
+        // Announce results to screen readers
+        announceSearchResults(results.length);
+        
+        if (results.length === 0) {
+            searchResults.innerHTML = `<div class="search-result-item" role="option">Nessuna sede trovata</div>`;
+            return;
+        }
+        
+        results.forEach((item, index) => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+            resultItem.setAttribute('role', 'option');
+            resultItem.setAttribute('tabindex', '0');
+            resultItem.setAttribute('aria-selected', 'false');
+            resultItem.innerHTML = `
+                <div class="search-result-title">${item.title}</div>
+                <div class="search-result-desc">${item.desc}</div>
+            `;
+            
+            // Keyboard navigation for search results
+            resultItem.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const next = this.nextElementSibling;
+                    if (next) next.focus();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const prev = this.previousElementSibling;
+                    if (prev) prev.focus();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    const searchOverlay = document.getElementById('search-overlay');
+                    const searchInput = document.getElementById('search-input');
+                    searchOverlay.classList.remove('active');
+                    searchInput.value = '';
+                    searchResults.innerHTML = '';
+                    document.getElementById('search-trigger').focus();
                 }
-            } else if (e.key === 'Escape') {
+            });
+            
+            resultItem.addEventListener('click', () => {
+                const searchOverlay = document.getElementById('search-overlay');
+                const searchInput = document.getElementById('search-input');
                 searchOverlay.classList.remove('active');
                 searchInput.value = '';
                 searchResults.innerHTML = '';
-                searchTrigger.focus();
-            }
+                
+                // Navigate to the section
+                window.location.href = item.link;
+                
+                // Focus the specific location after a short delay
+                setTimeout(() => {
+                    const targetCard = document.getElementById(item.id);
+                    if (targetCard) {
+                        targetCard.focus();
+                        targetCard.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }
+                }, 300);
+            });
+            
+            searchResults.appendChild(resultItem);
         });
+        
+        // Set first result as focusable
+        if (results.length > 0) {
+            searchResults.querySelector('.search-result-item').focus();
+        }
     }
     
-    // Initialize focus trap when search opens
-    searchOverlay.addEventListener('transitionend', function() {
-        if (this.classList.contains('active')) {
-            trapFocus(this);
-        }
-    });
-    
     return { performSearch };
+}
+
+// Global search function (fallback)
+function performSearch(query) {
+    const results = searchData.it.filter(item => 
+        item.title.toLowerCase().includes(query.toLowerCase()) ||
+        item.desc.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    const searchResults = document.getElementById('search-results');
+    searchResults.innerHTML = '';
+    
+    if (results.length === 0) {
+        searchResults.innerHTML = `<div class="search-result-item" role="option">Nessuna sede trovata</div>`;
+        return;
+    }
+    
+    results.forEach((item, index) => {
+        const resultItem = document.createElement('div');
+        resultItem.className = 'search-result-item';
+        resultItem.setAttribute('role', 'option');
+        resultItem.setAttribute('tabindex', '0');
+        resultItem.setAttribute('aria-selected', 'false');
+        resultItem.innerHTML = `
+            <div class="search-result-title">${item.title}</div>
+            <div class="search-result-desc">${item.desc}</div>
+        `;
+        
+        resultItem.addEventListener('click', () => {
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchInput = document.getElementById('search-input');
+            searchOverlay.classList.remove('active');
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+            
+            // Navigate to the section
+            window.location.href = item.link;
+            
+            // Focus the specific location after a short delay
+            setTimeout(() => {
+                const targetCard = document.getElementById(item.id);
+                if (targetCard) {
+                    targetCard.focus();
+                    targetCard.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            }, 300);
+        });
+        
+        searchResults.appendChild(resultItem);
+    });
 }
 
 // Initialize everything when DOM is ready
@@ -479,8 +573,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Open search
     searchTrigger.addEventListener('click', () => {
-        // Update placeholder with current language
-        searchInput.placeholder = translations[currentLang]['search.placeholder'];
         searchOverlay.classList.add('active');
         searchInput.focus();
     });
@@ -502,19 +594,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     searchBtn.addEventListener('click', () => {
-        accessibility.performSearch(searchInput.value);
+        performSearch(searchInput.value);
     });
     
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            accessibility.performSearch(searchInput.value);
+            performSearch(searchInput.value);
         }
     });
     
     // Live search
     searchInput.addEventListener('input', () => {
         if (searchInput.value.length > 2) {
-            accessibility.performSearch(searchInput.value);
+            performSearch(searchInput.value);
         } else {
             searchResults.innerHTML = '';
         }
