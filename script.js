@@ -245,40 +245,39 @@ function initBackToTop() {
     });
 }
 
-// Search Functionality
-function initSearch() {
-    const searchTrigger = document.getElementById('search-trigger');
-    const searchOverlay = document.getElementById('search-overlay');
-    const searchClose = document.getElementById('search-close');
-    const searchInput = document.getElementById('search-input');
-    const searchBtn = document.getElementById('search-btn');
-    const searchResults = document.getElementById('search-results');
-    
-    // Open search
-    searchTrigger.addEventListener('click', () => {
-        // Update placeholder with current language
-        searchInput.placeholder = translations[currentLang]['search.placeholder'];
-        searchOverlay.classList.add('active');
-        searchInput.focus();
+// Accessibility improvements
+function initAccessibility() {
+    // Keyboard navigation for location cards
+    document.querySelectorAll('.location-card').forEach(card => {
+        card.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                // Find and click the first action button
+                const firstButton = this.querySelector('a');
+                if (firstButton) {
+                    firstButton.click();
+                }
+            }
+        });
     });
     
-    // Close search
-    searchClose.addEventListener('click', () => {
-        searchOverlay.classList.remove('active');
-        searchInput.value = '';
-        searchResults.innerHTML = '';
-    });
+    // Announce search results to screen readers
+    function announceSearchResults(count) {
+        const announcement = document.createElement('div');
+        announcement.setAttribute('role', 'status');
+        announcement.setAttribute('aria-live', 'polite');
+        announcement.className = 'sr-only';
+        announcement.textContent = count === 0 ? 
+            'Nessuna sede trovata' : 
+            `Trovate ${count} sedi`;
+        document.body.appendChild(announcement);
+        
+        setTimeout(() => {
+            document.body.removeChild(announcement);
+        }, 1000);
+    }
     
-    // Close on overlay click
-    searchOverlay.addEventListener('click', (e) => {
-        if (e.target === searchOverlay) {
-            searchOverlay.classList.remove('active');
-            searchInput.value = '';
-            searchResults.innerHTML = '';
-        }
-    });
-    
-    // Search functionality
+    // Enhanced search functionality with accessibility
     function performSearch(query) {
         const results = searchData[currentLang].filter(item => 
             item.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -287,18 +286,47 @@ function initSearch() {
         
         searchResults.innerHTML = '';
         
+        // Announce results to screen readers
+        announceSearchResults(results.length);
+        
         if (results.length === 0) {
-            searchResults.innerHTML = `<div class="search-result-item">${translations[currentLang]['search.no_results']}</div>`;
+            searchResults.innerHTML = `<div class="search-result-item" role="option">${translations[currentLang]['search.no_results']}</div>`;
             return;
         }
         
-        results.forEach(item => {
+        results.forEach((item, index) => {
             const resultItem = document.createElement('div');
             resultItem.className = 'search-result-item';
+            resultItem.setAttribute('role', 'option');
+            resultItem.setAttribute('tabindex', '0');
+            resultItem.setAttribute('aria-selected', 'false');
             resultItem.innerHTML = `
                 <div class="search-result-title">${item.title}</div>
                 <div class="search-result-desc">${item.desc}</div>
             `;
+            
+            // Keyboard navigation for search results
+            resultItem.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const next = this.nextElementSibling;
+                    if (next) next.focus();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const prev = this.previousElementSibling;
+                    if (prev) prev.focus();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    searchOverlay.classList.remove('active');
+                    searchInput.value = '';
+                    searchResults.innerHTML = '';
+                    searchTrigger.focus();
+                }
+            });
+            
             resultItem.addEventListener('click', () => {
                 searchOverlay.classList.remove('active');
                 searchInput.value = '';
@@ -317,6 +345,7 @@ function initSearch() {
                     const targetCard = document.getElementById(item.id);
                     if (targetCard) {
                         targetCard.classList.add('highlighted');
+                        targetCard.focus();
                         // Scroll to the highlighted card
                         targetCard.scrollIntoView({
                             behavior: 'smooth',
@@ -330,28 +359,54 @@ function initSearch() {
                     }
                 }, 300);
             });
+            
             searchResults.appendChild(resultItem);
+        });
+        
+        // Set first result as focusable
+        if (results.length > 0) {
+            searchResults.querySelector('.search-result-item').focus();
+        }
+    }
+    
+    // Trap focus in search modal
+    function trapFocus(element) {
+        const focusableElements = element.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+        
+        element.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusable) {
+                        lastFocusable.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusable) {
+                        firstFocusable.focus();
+                        e.preventDefault();
+                    }
+                }
+            } else if (e.key === 'Escape') {
+                searchOverlay.classList.remove('active');
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+                searchTrigger.focus();
+            }
         });
     }
     
-    searchBtn.addEventListener('click', () => {
-        performSearch(searchInput.value);
-    });
-    
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            performSearch(searchInput.value);
+    // Initialize focus trap when search opens
+    searchOverlay.addEventListener('transitionend', function() {
+        if (this.classList.contains('active')) {
+            trapFocus(this);
         }
     });
     
-    // Live search
-    searchInput.addEventListener('input', () => {
-        if (searchInput.value.length > 2) {
-            performSearch(searchInput.value);
-        } else {
-            searchResults.innerHTML = '';
-        }
-    });
+    return { performSearch };
 }
 
 // Initialize everything when DOM is ready
@@ -361,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize components
     initBackToTop();
-    initSearch();
+    const accessibility = initAccessibility();
     
     // Load saved language preference
     const savedLang = localStorage.getItem('preferredLanguage') || 'it';
@@ -419,5 +474,56 @@ document.addEventListener('DOMContentLoaded', function() {
     const carousel = new bootstrap.Carousel(document.getElementById('imageCarousel'), {
         interval: 4000,
         ride: 'carousel'
+    });
+    
+    // Search functionality
+    const searchTrigger = document.getElementById('search-trigger');
+    const searchOverlay = document.getElementById('search-overlay');
+    const searchClose = document.getElementById('search-close');
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+    const searchResults = document.getElementById('search-results');
+    
+    // Open search
+    searchTrigger.addEventListener('click', () => {
+        // Update placeholder with current language
+        searchInput.placeholder = translations[currentLang]['search.placeholder'];
+        searchOverlay.classList.add('active');
+        searchInput.focus();
+    });
+    
+    // Close search
+    searchClose.addEventListener('click', () => {
+        searchOverlay.classList.remove('active');
+        searchInput.value = '';
+        searchResults.innerHTML = '';
+    });
+    
+    // Close on overlay click
+    searchOverlay.addEventListener('click', (e) => {
+        if (e.target === searchOverlay) {
+            searchOverlay.classList.remove('active');
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+        }
+    });
+    
+    searchBtn.addEventListener('click', () => {
+        accessibility.performSearch(searchInput.value);
+    });
+    
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            accessibility.performSearch(searchInput.value);
+        }
+    });
+    
+    // Live search
+    searchInput.addEventListener('input', () => {
+        if (searchInput.value.length > 2) {
+            accessibility.performSearch(searchInput.value);
+        } else {
+            searchResults.innerHTML = '';
+        }
     });
 });
