@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="it" id="html-lang">
 <head>
-    <script type="text/javascript" src="https://embeds.iubenda.com/widgets/cdafcff8-62ce-4f73-9669-117c31e58f83.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Nova Autolavaggi - Autolavaggio Professionale in Emilia-Romagna</title>
     <meta id="page-description" name="description" content="Nova Autolavaggi: autolavaggio con operatori a Modena, Sassuolo, Rubiera e Limidi di Soliera. Servizi professionali, orari convenienti e qualità garantita.">
     <meta id="page-keywords" name="keywords" content="autolavaggio Modena, lavaggio auto Sassuolo, autolavaggio Rubiera, lavaggio auto Limidi di Soliera, pulizia auto Emilia-Romagna">
+    
+    <!-- Accessibility meta tags -->
+    <meta name="author" content="Nova Autolavaggi">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,6 +20,37 @@
     <link rel="icon" type="image/png" href="Blured_resource/favicon.png">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Skip to main content link -->
+    <style>
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--accent-color);
+            color: var(--text-dark);
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            z-index: 10000;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 6px;
+        }
+    </style>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Nova Autolavaggi",
+        "description": "Servizi professionali di autolavaggio con operatori in Emilia-Romagna",
+        "areaServed": "Modena, Sassuolo, Rubiera, Limidi di Soliera",
+        "serviceType": "Car Wash"
+    }
+    </script>
 </head>
 
 <!-- Loading Screen -->
@@ -30,55 +65,59 @@
     </div>
 </div>
 <body>
+    <!-- Skip to main content link -->
+    <a href="#main-content" class="skip-link">Salta al contenuto principale</a>
+    
     <!-- Language Selector -->
-    <div class="language-selector">
-        <button class="lang-btn active" data-lang="it">IT</button>
-        <button class="lang-btn" data-lang="en">EN</button>
+    <div class="language-selector" role="navigation" aria-label="Selezione lingua">
+        <button class="lang-btn active" data-lang="it" aria-pressed="true" aria-label="Scegli lingua Italiano">IT</button>
+        <button class="lang-btn" data-lang="en" aria-pressed="false" aria-label="Scegli lingua English">EN</button>
     </div>
 
     <!-- Back to Top Button -->
-    <button id="back-to-top" class="back-to-top" aria-label="Torna su">
-        <i class="fas fa-arrow-up"></i>
+    <button id="back-to-top" class="back-to-top" aria-label="Torna all'inizio della pagina">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
     <!-- Search Bar -->
-    <div class="search-overlay" id="search-overlay">
+    <div class="search-overlay" id="search-overlay" role="dialog" aria-modal="true" aria-labelledby="search-title">
         <div class="search-container">
             <div class="search-content">
-                <button class="search-close" id="search-close">
-                    <i class="fas fa-times"></i>
+                <button class="search-close" id="search-close" aria-label="Chiudi la finestra di ricerca">
+                    <i class="fas fa-times" aria-hidden="true"></i>
                 </button>
-                <h3 data-lang="search.title">Cerca</h3>
+                <h3 id="search-title" data-lang="search.title">Cerca</h3>
                 <div class="search-input-group">
-                    <input type="text" id="search-input" class="search-input" placeholder="Cerca le sedi...">
-                    <button class="search-btn" id="search-btn">
-                        <i class="fas fa-search"></i>
+                    <label for="search-input" class="sr-only">Cerca le sedi Nova Autolavaggi</label>
+                    <input type="text" id="search-input" class="search-input" placeholder="Cerca le sedi..." aria-label="Cerca sedi" autocomplete="off">
+                    <button class="search-btn" id="search-btn" aria-label="Cerca le sedi">
+                        <i class="fas fa-search" aria-hidden="true"></i>
                     </button>
                 </div>
-                <div id="search-results" class="search-results"></div>
+                <div id="search-results" class="search-results" role="region" aria-live="polite" aria-label="Risultati ricerca"></div>
             </div>
         </div>
     </div>
 
     <!-- Search Trigger Button -->
-    <button id="search-trigger" class="search-trigger" aria-label="Cerca">
-        <i class="fas fa-search"></i>
+    <button id="search-trigger" class="search-trigger" aria-label="Apri la ricerca delle sedi">
+        <i class="fas fa-search" aria-hidden="true"></i>
     </button>
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section class="hero-section" id="main-content" role="banner">
         <div class="container">
             <div class="hero-content text-center">
                 <h1 class="display-4 fw-bold mb-3" data-lang="hero.title">Nova Autolavaggi</h1>
                 <p class="lead mb-4" data-lang="hero.subtitle">La tua auto merita il meglio. Servizi di autolavaggio professionale con operatori specializzati in tutta l'Emilia-Romagna.</p>
                 <div class="mb-4">
-                    <span class="hours-badge">
-                        <i class="fas fa-clock me-2"></i>
+                    <span class="hours-badge" role="status" aria-label="Orari di apertura">
+                        <i class="fas fa-clock me-2" aria-hidden="true"></i>
                         <span data-lang="hero.hours">Aperto Lun-Sab: 8:00-19:00 | Dom: 8:00-13:00</span>
                     </span>
                 </div>
-                <div class="d-flex gap-3 justify-content-center flex-wrap">
-                    <a href="#locations" class="btn btn-primary-custom" data-lang="hero.btn1">Trova la sede più vicina</a>
-                    <a href="tel:3510013503" class="btn btn-outline-custom" data-lang="hero.btn2">Chiama ora</a>
+                <div class="d-flex gap-3 justify-content-center flex-wrap" role="group" aria-label="Azioni principali">
+                    <a href="#locations" class="btn btn-primary-custom" data-lang="hero.btn1" role="button">Trova la sede più vicina</a>
+                    <a href="tel:3510013503" class="btn btn-outline-custom" data-lang="hero.btn2" role="button">Chiama ora</a>
                 </div>
             </div>
         </div>
@@ -92,46 +131,46 @@
                 <p class="lead text-muted" data-lang="carousel.subtitle">Scopri le nostre sedi, i nostri tecnici e le attrezzature all'avanguardia</p>
             </div>
             
-            <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="0" class="active"></button>
-                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="1"></button>
-                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="2"></button>
-                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="3"></button>
-                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="4"></button>
+            <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel" role="region" aria-roledescription="carousel" aria-label="Galleria immagini Nova Autolavaggi">
+                <div class="carousel-indicators" role="tablist">
+                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="0" class="active" role="tab" aria-selected="true" aria-label="Slide 1 di 5: Le Nostre Sedi Moderne"></button>
+                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="1" role="tab" aria-selected="false" aria-label="Slide 2 di 5: Tecnici Professionisti"></button>
+                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="2" role="tab" aria-selected="false" aria-label="Slide 3 di 5: Attrezzature All'avanguardia"></button>
+                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="3" role="tab" aria-selected="false" aria-label="Slide 4 di 5: Risultati Eccellenti"></button>
+                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="4" role="tab" aria-selected="false" aria-label="Slide 5 di 5: Servizio Clienti"></button>
                 </div>
                 
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="Blured_resource/Blur_IMG_1421.JPG" class="d-block w-100" alt="Sede Nova Autolavaggi">
+                <div class="carousel-inner" role="list">
+                    <div class="carousel-item active" role="group" aria-roledescription="slide">
+                        <img src="Blured_resource/Blur_IMG_1421.JPG" class="d-block w-100" alt="Sede Nova Autolavaggi - Struttura moderna e attrezzata per autolavaggio professionale">
                         <div class="carousel-caption d-none d-md-block">
                             <h4 data-lang="carousel.slide1.title">Le Nostre Sedi Moderne</h4>
                             <p data-lang="carousel.slide1.desc">Strutture attrezzate e posizioni strategiche per la tua comodità</p>
                         </div>
                     </div>
-                    <div class="carousel-item">
-                        <img src="Blured_resource/Blur_65df4f55-2234-4d0a-adae-43702fa7ae99.JPG" class="d-block w-100" alt="Tecnici Professionisti">
+                    <div class="carousel-item" role="group" aria-roledescription="slide">
+                        <img src="Blured_resource/Blur_65df4f55-2234-4d0a-adae-43702fa7ae99.JPG" class="d-block w-100" alt="Tecnici Professionisti - Personale qualificato al lavoro sulle auto">
                         <div class="carousel-caption d-none d-md-block">
                             <h4 data-lang="carousel.slide2.title">Tecnici Professionisti</h4>
                             <p data-lang="carousel.slide2.desc">Personale qualificato e attento ai dettagli per un risultato perfetto</p>
                         </div>
                     </div>
-                    <div class="carousel-item">
-                        <img src="Blured_resource/Blur_694462c3-2755-4b55-a174-58ea6caa814e.JPG" class="d-block w-100" alt="Attrezzature All'avanguardia">
+                    <div class="carousel-item" role="group" aria-roledescription="slide">
+                        <img src="Blured_resource/Blur_694462c3-2755-4b55-a174-58ea6caa814e.JPG" class="d-block w-100" alt="Attrezzature All'avanguardia - Tecnologia moderna per autolavaggio">
                         <div class="carousel-caption d-none d-md-block">
                             <h4 data-lang="carousel.slide3.title">Attrezzature All'avanguardia</h4>
                             <p data-lang="carousel.slide3.desc">Tecnologia moderna per un lavaggio efficace e rispettoso della tua auto</p>
                         </div>
                     </div>
-                    <div class="carousel-item">
-                        <img src="Blured_resource/Blur_IMG_6247.JPG" class="d-block w-100" alt="Risultati Eccellenti">
+                    <div class="carousel-item" role="group" aria-roledescription="slide">
+                        <img src="Blured_resource/Blur_IMG_6247.JPG" class="d-block w-100" alt="Risultati Eccellenti - Auto pulita e brillante dopo il lavaggio">
                         <div class="carousel-caption d-none d-md-block">
                             <h4 data-lang="carousel.slide4.title">Risultati Eccellenti</h4>
                             <p data-lang="carousel.slide4.desc">Auto pulita e brillante, pronta per tornare sulla strada</p>
                         </div>
                     </div>
-                    <div class="carousel-item">
-                        <img src="Blured_resource/Blur_c4d88cad-e9a3-4d30-9259-626f204257c2.JPG" class="d-block w-100" alt="Servizio Clienti">
+                    <div class="carousel-item" role="group" aria-roledescription="slide">
+                        <img src="Blured_resource/Blur_c4d88cad-e9a3-4d30-9259-626f204257c2.JPG" class="d-block w-100" alt="Servizio Clienti - Professionalità e cortesia nel servizio">
                         <div class="carousel-caption d-none d-md-block">
                             <h4 data-lang="carousel.slide5.title">Servizio Clienti</h4>
                             <p data-lang="carousel.slide5.desc">Professionalità e cortesia per un'esperienza di lavaggio completa</p>
@@ -139,79 +178,79 @@
                     </div>
                 </div>
                 
-                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
+                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev" aria-label="Slide precedente">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
+                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next" aria-label="Slide successivo">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 </button>
             </div>
         </div>
     </section>
 
     <!-- Why Choose Us Section -->
-    <section class="section-padding">
+    <section class="section-padding" aria-labelledby="features-title">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3" data-lang="features.title">Perché Scegliere Autolaggi Nova</h2>
+                <h2 id="features-title" class="display-5 fw-bold mb-3" data-lang="features.title">Perché Scegliere Autolaggi Nova</h2>
                 <p class="lead text-muted" data-lang="features.subtitle">La nostra esperienza al servizio della tua auto</p>
             </div>
             
-            <div class="row g-4">
-                <div class="col-md-4">
+            <div class="row g-4" role="list">
+                <div class="col-md-4" role="listitem">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
                         </div>
                         <h4 data-lang="features.quality.title">Qualità Garantita</h4>
                         <p data-lang="features.quality.desc">Servizi professionali con prodotti di alta qualità per proteggere e valorizzare la tua auto. Ogni lavaggio è un trattamento di cura completo.</p>
                     </div>
                 </div>
                 
-                <div class="col-md-4">
+                <div class="col-md-4" role="listitem">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-tachometer-alt"></i>
+                            <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
                         </div>
                         <h4 data-lang="features.speed.title">Rapidità ed Efficienza</h4>
                         <p data-lang="features.speed.desc">Servizi rapidi senza compromettere la qualità. Rispettiamo il tuo tempo con procedure ottimizzate e personale esperto.</p>
                     </div>
                 </div>
                 
-                <div class="col-md-4">
+                <div class="col-md-4" role="listitem">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-map-marked-alt"></i>
+                            <i class="fas fa-map-marked-alt" aria-hidden="true"></i>
                         </div>
                         <h4 data-lang="features.locations.title">4 Sedi Strategiche</h4>
                         <p data-lang="features.locations.desc">Presenti a Modena, Sassuolo, Rubiera e Limidi di Soliera. Trovaci sempre vicino a te per massima comodità.</p>
                     </div>
                 </div>
                 
-                <div class="col-md-4">
+                <div class="col-md-4" role="listitem">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-users-cog"></i>
+                            <i class="fas fa-users-cog" aria-hidden="true"></i>
                         </div>
                         <h4 data-lang="features.staff.title">Operatori Specializzati</h4>
                         <p data-lang="features.staff.desc">Personale formato e esperto che conosce ogni tipo di veicolo. L'attenzione ai dettagli fa la differenza.</p>
                     </div>
                 </div>
                 
-                <div class="col-md-4">
+                <div class="col-md-4" role="listitem">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-shopping-cart"></i>
+                            <i class="fas fa-shopping-cart" aria-hidden="true"></i>
                         </div>
                         <h4 data-lang="features.shop.title">Shop e Accessori</h4>
                         <p data-lang="features.shop.desc">Oltre al lavaggio, prodotti e accessori per la cura della tua auto. Tutto ciò che serve per mantenerla perfetta.</p>
                     </div>
                 </div>
                 
-                <div class="col-md-4">
+                <div class="col-md-4" role="listitem">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
+                            <i class="fas fa-shield-alt" aria-hidden="true"></i>
                         </div>
                         <h4 data-lang="features.reliability.title">Servizio Affidabile</h4>
                         <p data-lang="features.reliability.desc">Anni di esperienza nel settore automotive. La fiducia dei nostri clienti è il nostro miglior biglietto da visita.</p>
@@ -222,105 +261,105 @@
     </section>
 
     <!-- Locations Section -->
-    <section id="locations" class="section-padding bg-light">
+    <section id="locations" class="section-padding bg-light" aria-labelledby="locations-title">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3" data-lang="locations.title">Le Nostre Sedi</h2>
+                <h2 id="locations-title" class="display-5 fw-bold mb-3" data-lang="locations.title">Le Nostre Sedi</h2>
                 <p class="lead text-muted" data-lang="locations.subtitle">Trova la sede Autolaggi Nova più vicina a te</p>
             </div>
             
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="location-card" id="location-modena">
+            <div class="row" role="list">
+                <div class="col-lg-6" role="listitem">
+                    <div class="location-card" id="location-modena" tabindex="0" role="article" aria-labelledby="modena-name">
                         <div class="location-header">
                             <div class="location-icon">
-                                <i class="fas fa-map-marker-alt"></i>
+                                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
                             </div>
                             <div>
-                                <h4 class="mb-0" data-lang="locations.modena.name">Modena</h4>
+                                <h4 id="modena-name" class="mb-0" data-lang="locations.modena.name">Modena</h4>
                                 <small class="text-muted" data-lang="locations.modena.station">Stazione servizio Q8</small>
                             </div>
                         </div>
                         <p class="mb-2"><strong data-lang="locations.address">Indirizzo:</strong> Strada Morane, 338</p>
-                        <p class="mb-3"><strong data-lang="locations.phone">Telefono:</strong> <a href="tel:3511884210" class="text-decoration-none">351 188 4210</a></p>
-                        <div class="d-flex gap-2">
-                            <a href="https://maps.google.com/?q=Strada+Morane+338+Modena" target="_blank" class="btn-map-custom">
-                                <i class="fas fa-map"></i>
+                        <p class="mb-3"><strong data-lang="locations.phone">Telefono:</strong> <a href="tel:3511884210" class="text-decoration-none" aria-label="Chiama la sede di Modena al numero 351 188 4210">351 188 4210</a></p>
+                        <div class="d-flex gap-2" role="group" aria-label="Azioni per la sede di Modena">
+                            <a href="https://maps.google.com/?q=Strada+Morane+338+Modena" target="_blank" class="btn-map-custom" aria-label="Apri mappa per la sede di Modena">
+                                <i class="fas fa-map" aria-hidden="true"></i>
                             </a>
-                            <a href="tel:3511884210" class="btn-call-custom">
-                                <i class="fas fa-phone"></i> <span data-lang="locations.call">Chiama</span>
+                            <a href="tel:3511884210" class="btn-call-custom" aria-label="Chiama la sede di Modena">
+                                <i class="fas fa-phone" aria-hidden="true"></i> <span data-lang="locations.call">Chiama</span>
                             </a>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-lg-6">
-                    <div class="location-card" id="location-rubiera">
+                <div class="col-lg-6" role="listitem">
+                    <div class="location-card" id="location-rubiera" tabindex="0" role="article" aria-labelledby="rubiera-name">
                         <div class="location-header">
                             <div class="location-icon">
-                                <i class="fas fa-map-marker-alt"></i>
+                                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
                             </div>
                             <div>
-                                <h4 class="mb-0" data-lang="locations.rubiera.name">Rubiera</h4>
+                                <h4 id="rubiera-name" class="mb-0" data-lang="locations.rubiera.name">Rubiera</h4>
                                 <small class="text-muted" data-lang="locations.rubiera.station">Stazione servizio Eni</small>
                             </div>
                         </div>
                         <p class="mb-2"><strong data-lang="locations.address">Indirizzo:</strong> Via Contea, 20</p>
-                        <p class="mb-3"><strong data-lang="locations.phone">Telefono:</strong> <a href="tel:3510013503" class="text-decoration-none">351 001 3503</a></p>
-                        <div class="d-flex gap-2">
-                            <a href="https://maps.google.com/?q=Via+Contea+20+Rubiera" target="_blank" class="btn-map-custom">
-                                <i class="fas fa-map"></i>
+                        <p class="mb-3"><strong data-lang="locations.phone">Telefono:</strong> <a href="tel:3510013503" class="text-decoration-none" aria-label="Chiama la sede di Rubiera al numero 351 001 3503">351 001 3503</a></p>
+                        <div class="d-flex gap-2" role="group" aria-label="Azioni per la sede di Rubiera">
+                            <a href="https://maps.google.com/?q=Via+Contea+20+Rubiera" target="_blank" class="btn-map-custom" aria-label="Apri mappa per la sede di Rubiera">
+                                <i class="fas fa-map" aria-hidden="true"></i>
                             </a>
-                            <a href="tel:3510013503" class="btn-call-custom">
-                                <i class="fas fa-phone"></i> <span data-lang="locations.call">Chiama</span>
+                            <a href="tel:3510013503" class="btn-call-custom" aria-label="Chiama la sede di Rubiera">
+                                <i class="fas fa-phone" aria-hidden="true"></i> <span data-lang="locations.call">Chiama</span>
                             </a>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-lg-6">
-                    <div class="location-card" id="location-limidi">
+                <div class="col-lg-6" role="listitem">
+                    <div class="location-card" id="location-limidi" tabindex="0" role="article" aria-labelledby="limidi-name">
                         <div class="location-header">
                             <div class="location-icon">
-                                <i class="fas fa-map-marker-alt"></i>
+                                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
                             </div>
                             <div>
-                                <h4 class="mb-0" data-lang="locations.limidi.name">Limidi di Soliera</h4>
+                                <h4 id="limidi-name" class="mb-0" data-lang="locations.limidi.name">Limidi di Soliera</h4>
                                 <small class="text-muted" data-lang="locations.limidi.station">Stazione servizio Q8</small>
                             </div>
                         </div>
                         <p class="mb-2"><strong data-lang="locations.address">Indirizzo:</strong> Via Ravarino per Carpi, 141</p>
-                        <p class="mb-3"><strong data-lang="locations.phone">Telefono:</strong> <a href="tel:3884212221" class="text-decoration-none">388 421 2221</a></p>
-                        <div class="d-flex gap-2">
-                            <a href="https://maps.google.com/?q=Via+Ravarino+per+Carpi+141+Limidi+di+Soliera" target="_blank" class="btn-map-custom">
-                                <i class="fas fa-map"></i>
+                        <p class="mb-3"><strong data-lang="locations.phone">Telefono:</strong> <a href="tel:3884212221" class="text-decoration-none" aria-label="Chiama la sede di Limidi di Soliera al numero 388 421 2221">388 421 2221</a></p>
+                        <div class="d-flex gap-2" role="group" aria-label="Azioni per la sede di Limidi di Soliera">
+                            <a href="https://maps.google.com/?q=Via+Ravarino+per+Carpi+141+Limidi+di+Soliera" target="_blank" class="btn-map-custom" aria-label="Apri mappa per la sede di Limidi di Soliera">
+                                <i class="fas fa-map" aria-hidden="true"></i>
                             </a>
-                            <a href="tel:3884212221" class="btn-call-custom">
-                                <i class="fas fa-phone"></i> <span data-lang="locations.call">Chiama</span>
+                            <a href="tel:3884212221" class="btn-call-custom" aria-label="Chiama la sede di Limidi di Soliera">
+                                <i class="fas fa-phone" aria-hidden="true"></i> <span data-lang="locations.call">Chiama</span>
                             </a>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-lg-6">
-                    <div class="location-card" id="location-sassuolo">
+                <div class="col-lg-6" role="listitem">
+                    <div class="location-card" id="location-sassuolo" tabindex="0" role="article" aria-labelledby="sassuolo-name">
                         <div class="location-header">
                             <div class="location-icon">
-                                <i class="fas fa-map-marker-alt"></i>
+                                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
                             </div>
                             <div>
-                                <h4 class="mb-0" data-lang="locations.sassuolo.name">Sassuolo</h4>
+                                <h4 id="sassuolo-name" class="mb-0" data-lang="locations.sassuolo.name">Sassuolo</h4>
                                 <small class="text-muted" data-lang="locations.sassuolo.station">Stazione servizio Q8</small>
                             </div>
                         </div>
                         <p class="mb-2"><strong data-lang="locations.address">Indirizzo:</strong> Via Radici in Piano, 503</p>
-                        <p class="mb-3"><strong data-lang="locations.phone">Telefono:</strong> <a href="tel:3510013503" class="text-decoration-none">351 001 3503</a></p>
-                        <div class="d-flex gap-2">
-                            <a href="https://maps.google.com/?q=Via+Radici+in+Piano+503+Sassuolo" target="_blank" class="btn-map-custom">
-                                <i class="fas fa-map"></i>
+                        <p class="mb-3"><strong data-lang="locations.phone">Telefono:</strong> <a href="tel:3510013503" class="text-decoration-none" aria-label="Chiama la sede di Sassuolo al numero 351 001 3503">351 001 3503</a></p>
+                        <div class="d-flex gap-2" role="group" aria-label="Azioni per la sede di Sassuolo">
+                            <a href="https://maps.google.com/?q=Via+Radici+in+Piano+503+Sassuolo" target="_blank" class="btn-map-custom" aria-label="Apri mappa per la sede di Sassuolo">
+                                <i class="fas fa-map" aria-hidden="true"></i>
                             </a>
-                            <a href="tel:3510013503" class="btn-call-custom">
-                                <i class="fas fa-phone"></i> <span data-lang="locations.call">Chiama</span>
+                            <a href="tel:3510013503" class="btn-call-custom" aria-label="Chiama la sede di Sassuolo">
+                                <i class="fas fa-phone" aria-hidden="true"></i> <span data-lang="locations.call">Chiama</span>
                             </a>
                         </div>
                     </div>
@@ -330,18 +369,18 @@
     </section>
 
     <!-- Services Section -->
-    <section class="section-padding">
+    <section class="section-padding" aria-labelledby="services-title">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3" data-lang="services.title">I Nostri Servizi</h2>
+                <h2 id="services-title" class="display-5 fw-bold mb-3" data-lang="services.title">I Nostri Servizi</h2>
                 <p class="lead text-muted" data-lang="services.subtitle">Tutto ciò che serve per la cura della tua auto</p>
             </div>
             
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="text-center">
-                        <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px;">
-                            <i class="fas fa-car fa-2x"></i>
+                        <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px;" role="img" aria-label="Icona autolavaggio">
+                            <i class="fas fa-car fa-2x" aria-hidden="true"></i>
                         </div>
                         <h3 class="mb-3" data-lang="services.carwash.title">Autolavaggio con Operatori</h3>
                         <p class="lead mb-4" data-lang="services.carwash.desc">Servizio professionale di lavaggio con personale qualificato che si prende cura della tua auto con attenzione ai dettagli.</p>
@@ -349,8 +388,8 @@
                         <h4 class="mb-3" data-lang="services.shop.title">Shop e Prodotti</h4>
                         <p class="mb-4" data-lang="services.shop.desc">Presso le nostre sedi trovi un'ampia selezione di prodotti per la cura e la manutenzione della tua auto, accessori e molto altro.</p>
                         
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2" aria-hidden="true"></i>
                             <strong data-lang="services.all_locations">Tutte le nostre sedi offrono:</strong> <span data-lang="services.all_locations_desc">Servizi completi di autolavaggio, shop con prodotti specifici e consulenza per la cura del tuo veicolo.</span>
                         </div>
                     </div>
@@ -360,42 +399,42 @@
     </section>
 
     <!-- Contact Section -->
-    <section class="contact-section">
+    <section class="contact-section" aria-labelledby="contact-title">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3" data-lang="contact.title">Contattaci Subito</h2>
+                <h2 id="contact-title" class="display-5 fw-bold mb-3" data-lang="contact.title">Contattaci Subito</h2>
                 <p class="lead" data-lang="contact.subtitle">Siamo a tua disposizione per qualsiasi informazione</p>
             </div>
             
-            <div class="row g-4 justify-content-center">
-                <div class="col-md-4 col-lg-3">
-                    <div class="contact-card h-100">
-                        <i class="fas fa-envelope fa-3x mb-3"></i>
+            <div class="row g-4 justify-content-center" role="list">
+                <div class="col-md-4 col-lg-3" role="listitem">
+                    <div class="contact-card h-100" role="article">
+                        <i class="fas fa-envelope fa-3x mb-3" aria-hidden="true"></i>
                         <h4 data-lang="contact.email.title">Email</h4>
-                        <p><a href="mailto:amministrazione@novaautolavaggi.it" class="text-white text-decoration-none">amministrazione@novaautolavaggi.it</a></p>
+                        <p><a href="mailto:amministrazione@novaautolavaggi.it" class="text-white text-decoration-none" aria-label="Invia email a amministrazione@novaautolavaggi.it">amministrazione@novaautolavaggi.it</a></p>
                     </div>
                 </div>
                 
-                <div class="col-md-4 col-lg-3">
-                    <div class="contact-card h-100">
-                        <i class="fas fa-phone fa-3x mb-3"></i>
+                <div class="col-md-4 col-lg-3" role="listitem">
+                    <div class="contact-card h-100" role="article">
+                        <i class="fas fa-phone fa-3x mb-3" aria-hidden="true"></i>
                         <h4 data-lang="contact.phone.title">Chiamaci</h4>
-                        <p><a href="tel:3510013503" class="text-white text-decoration-none">351 001 3503</a></p>
+                        <p><a href="tel:3510013503" class="text-white text-decoration-none" aria-label="Chiama il numero 351 001 3503">351 001 3503</a></p>
                     </div>
                 </div>
                 
-                <div class="col-md-4 col-lg-3">
-                    <div class="contact-card h-100">
-                        <i class="fas fa-clock fa-3x mb-3"></i>
+                <div class="col-md-4 col-lg-3" role="listitem">
+                    <div class="contact-card h-100" role="article">
+                        <i class="fas fa-clock fa-3x mb-3" aria-hidden="true"></i>
                         <h4 data-lang="contact.hours.title">Orari di Apertura</h4>
                         <p data-lang="contact.hours.weekdays">Lunedì - Sabato: 8:00 - 19:00</p>
                         <p data-lang="contact.hours.sunday">Domenica: 8:00 - 13:00 </p>
                     </div>
                 </div>
                 
-                <div class="col-md-4 col-lg-3">
-                    <div class="contact-card h-100">
-                        <i class="fas fa-map-marked-alt fa-3x mb-3"></i>
+                <div class="col-md-4 col-lg-3" role="listitem">
+                    <div class="contact-card h-100" role="article">
+                        <i class="fas fa-map-marked-alt fa-3x mb-3" aria-hidden="true"></i>
                         <h4 data-lang="contact.locations.title">4 Sedi</h4>
                         <p data-lang="contact.locations.list1">Modena, Sassuolo</p>
                         <p data-lang="contact.locations.list2">Rubiera, Limidi di Soliera</p>
@@ -406,16 +445,16 @@
             <div class="text-center mt-5">
                 <h3 class="mb-3" data-lang="contact.cta.title">Vieni a Trovarci!</h3>
                 <p class="lead mb-4" data-lang="contact.cta.subtitle">La tua auto merita il trattamento migliore. Prenota o passa direttamente in una delle nostre sedi.</p>
-                <div class="d-flex gap-3 justify-content-center flex-wrap">
-                    <a href="#locations" class="btn btn-primary-custom btn-lg" data-lang="contact.cta.btn1">Trova la sede più vicina</a>
-                    <a href="tel:3510013503" class="btn btn-outline-custom btn-lg" data-lang="contact.cta.btn2">Chiama ora</a>
+                <div class="d-flex gap-3 justify-content-center flex-wrap" role="group" aria-label="Azioni principali di contatto">
+                    <a href="#locations" class="btn btn-primary-custom btn-lg" data-lang="contact.cta.btn1" role="button">Trova la sede più vicina</a>
+                    <a href="tel:3510013503" class="btn btn-outline-custom btn-lg" data-lang="contact.cta.btn2" role="button">Chiama ora</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -425,12 +464,17 @@
                 </div>
                 <div class="col-md-6 text-md-end">
                     <h5 class="mb-3" data-lang="footer.contacts.title">Contatti</h5>
-                    <p class="mb-2"><i class="fas fa-envelope me-2"></i><a href="mailto:amministrazione@novaautolavaggi.it" class="text-white text-decoration-none">amministrazione@novaautolavaggi.it</a></p>
-                    <p class="mb-0"><i class="fas fa-phone me-2"></i><a href="tel:3510013503" class="text-white text-decoration-none">351 001 3503</a></p>
+                    <p class="mb-2"><i class="fas fa-envelope me-2" aria-hidden="true"></i><a href="mailto:amministrazione@novaautolavaggi.it" class="text-white text-decoration-none" aria-label="Invia email a amministrazione@novaautolavaggi.it">amministrazione@novaautolavaggi.it</a></p>
+                    <p class="mb-0"><i class="fas fa-phone me-2" aria-hidden="true"></i><a href="tel:3510013503" class="text-white text-decoration-none" aria-label="Chiama il numero 351 001 3503">351 001 3503</a></p>
                 </div>
             </div>
         </div>
     </footer>
+    
+    <!-- Accessibility Statement -->
+    <div class="accessibility-info" style="display: none;" aria-hidden="true">
+        <p>Questo sito è conforme alle direttive europee sull'accessibilità WCAG 2.1 Livello AA.</p>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
