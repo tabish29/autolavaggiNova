@@ -406,13 +406,25 @@ font-size: 0.85rem;
 }
 
 .hours-badge {
-background: var(--accent-color);
-color: var(--text-dark);
-padding: 8px 16px;
-border-radius: 25px;
-font-weight: 600;
-display: inline-block;
-margin-top: 10px;
+    background: var(--accent-color);
+    color: var(--text-dark);
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* Responsive adjustments for hours badge */
+@media (max-width: 576px) {
+    .hours-badge {
+        font-size: 0.9rem;
+        padding: 8px 14px;
+        max-width: 280px;
+        text-align: center;
+    }
 }
 
 .hours-btn-map-custom {
