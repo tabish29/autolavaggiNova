@@ -311,6 +311,33 @@ body {
     width: 40px;
 }
 
+.service-icon-item {
+    position: relative;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    margin-right: 10px;
+}
+
+.service-icon-item:hover {
+    opacity: 1;
+}
+
+.service-icon-item:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-top: 5px;
+}
+
 @keyframes highlightPulse {
     0% {
         box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
