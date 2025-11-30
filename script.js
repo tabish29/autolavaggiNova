@@ -277,98 +277,6 @@ function initAccessibility() {
             item.desc.toLowerCase().includes(query.toLowerCase())
         );
         
-        searchResults.innerHTML = '';
-        
-        // Announce results to screen readers
-        announceSearchResults(results.length);
-        
-        if (results.length === 0) {
-            searchResults.innerHTML = `<div class="search-result-item" role="option">Nessuna sede trovata</div>`;
-            return;
-        }
-        
-        results.forEach((item, index) => {
-            const resultItem = document.createElement('div');
-            resultItem.className = 'search-result-item';
-            resultItem.setAttribute('role', 'option');
-            resultItem.setAttribute('tabindex', '0');
-            resultItem.setAttribute('aria-selected', 'false');
-            resultItem.innerHTML = `
-                <div class="search-result-title">${item.title}</div>
-                <div class="search-result-desc">${item.desc}</div>
-            `;
-            
-            // Keyboard navigation for search results
-            resultItem.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.click();
-                } else if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    const next = this.nextElementSibling;
-                    if (next) next.focus();
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    const prev = this.previousElementSibling;
-                    if (prev) prev.focus();
-                } else if (e.key === 'Escape') {
-                    e.preventDefault();
-                    searchOverlay.classList.remove('active');
-                    searchInput.value = '';
-                    searchResults.innerHTML = '';
-                    searchTrigger.focus();
-                }
-            });
-            
-            resultItem.addEventListener('click', () => {
-                searchOverlay.classList.remove('active');
-                searchInput.value = '';
-                searchResults.innerHTML = '';
-                
-                // Remove any existing highlights
-                document.querySelectorAll('.location-card').forEach(card => {
-                    card.classList.remove('highlighted');
-                });
-                
-                // Navigate to the section
-                window.location.href = item.link;
-                
-                // Highlight the specific location after a short delay
-                setTimeout(() => {
-                    const targetCard = document.getElementById(item.id);
-                    if (targetCard) {
-                        targetCard.classList.add('highlighted');
-                        targetCard.focus();
-                        // Scroll to the highlighted card
-                        targetCard.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                        
-                        // Remove highlight after 5 seconds
-                        setTimeout(() => {
-                            targetCard.classList.remove('highlighted');
-                        }, 5000);
-                    }
-                }, 300);
-            });
-            
-            searchResults.appendChild(resultItem);
-        });
-        
-        // Set first result as focusable
-        if (results.length > 0) {
-            searchResults.querySelector('.search-result-item').focus();
-        }
-    }
-    
-// Enhanced search functionality with accessibility
-    function performSearch(query) {
-        const results = searchData.it.filter(item => 
-            item.title.toLowerCase().includes(query.toLowerCase()) ||
-            item.desc.toLowerCase().includes(query.toLowerCase())
-        );
-        
         const searchResults = document.getElementById('search-results');
         searchResults.innerHTML = '';
         
@@ -508,61 +416,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hide loading screen
     hideLoadingScreen();
     
-    // Initialize components
-    //initBackToTop();
-    const accessibility = initAccessibility();
-    
-    // Load saved language preference
-    const savedLang = localStorage.getItem('preferredLanguage') || 'it';
-    updateLanguage(savedLang);
-
-    
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-                
-                // Remove hash from URL without affecting scroll position
-                history.replaceState(null, null, ' ');
-            }
-        });
-    });
-
-    // Handle browser back/forward buttons
-    window.addEventListener('popstate', function(event) {
-        if (event.state === null) {
-            history.replaceState(null, null, ' ');
-        }
-    });
-
-    // Remove hash on page load if present
-    if (window.location.hash) {
-        history.replaceState(null, null, ' ');
-        // Scroll to the section if hash was present
-        const hash = window.location.hash.substring(1);
-        const target = document.getElementById(hash);
-        if (target) {
-            setTimeout(() => {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }, 100);
-        }
-    }
-
-    // Auto-start carousel
-    const carousel = new bootstrap.Carousel(document.getElementById('imageCarousel'), {
-        interval: 4000,
-        ride: 'carousel'
-    });
-    
     // Search functionality
     const searchTrigger = document.getElementById('search-trigger');
     const searchOverlay = document.getElementById('search-overlay');
@@ -572,43 +425,104 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchResults = document.getElementById('search-results');
     
     // Open search
-    searchTrigger.addEventListener('click', () => {
-        searchOverlay.classList.add('active');
-        searchInput.focus();
-    });
+    if (searchTrigger && searchOverlay) {
+        searchTrigger.addEventListener('click', () => {
+            searchOverlay.classList.add('active');
+            if (searchInput) searchInput.focus();
+        });
+    }
     
     // Close search
-    searchClose.addEventListener('click', () => {
-        searchOverlay.classList.remove('active');
-        searchInput.value = '';
-        searchResults.innerHTML = '';
-    });
+    if (searchClose) {
+        searchClose.addEventListener('click', () => {
+            searchOverlay.classList.remove('active');
+            if (searchInput) searchInput.value = '';
+            if (searchResults) searchResults.innerHTML = '';
+        });
+    }
     
     // Close on overlay click
-    searchOverlay.addEventListener('click', (e) => {
-        if (e.target === searchOverlay) {
+    if (searchOverlay) {
+        searchOverlay.addEventListener('click', (e) => {
+            if (e.target === searchOverlay) {
+                searchOverlay.classList.remove('active');
+                if (searchInput) searchInput.value = '';
+                if (searchResults) searchResults.innerHTML = '';
+            }
+        });
+    }
+    
+    if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+            performSearch(searchInput.value);
+        });
+    }
+    
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch(searchInput.value);
+            }
+        });
+        
+        // Live search
+        searchInput.addEventListener('input', () => {
+            if (searchInput.value.length > 2) {
+                performSearch(searchInput.value);
+            } else {
+                searchResults.innerHTML = '';
+            }
+        });
+    }
+    
+    // Initialize components
+    //initBackToTop();
+    try {
+        const accessibility = initAccessibility();
+    } catch (error) {
+        console.error('Error initializing accessibility:', error);
+    }
+    
+    // Close search
+    if (searchClose) {
+        searchClose.addEventListener('click', () => {
             searchOverlay.classList.remove('active');
             searchInput.value = '';
             searchResults.innerHTML = '';
-        }
-    });
+        });
+    }
     
-    searchBtn.addEventListener('click', () => {
-        performSearch(searchInput.value);
-    });
+    // Close on overlay click
+    if (searchOverlay) {
+        searchOverlay.addEventListener('click', (e) => {
+            if (e.target === searchOverlay) {
+                searchOverlay.classList.remove('active');
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+            }
+        });
+    }
     
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
+    if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
             performSearch(searchInput.value);
-        }
-    });
+        });
+    }
     
-    // Live search
-    searchInput.addEventListener('input', () => {
-        if (searchInput.value.length > 2) {
-            performSearch(searchInput.value);
-        } else {
-            searchResults.innerHTML = '';
-        }
-    });
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch(searchInput.value);
+            }
+        });
+        
+        // Live search
+        searchInput.addEventListener('input', () => {
+            if (searchInput.value.length > 2) {
+                performSearch(searchInput.value);
+            } else {
+                searchResults.innerHTML = '';
+            }
+        });
+    }
 });
