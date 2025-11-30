@@ -218,7 +218,7 @@ function hideLoadingScreen() {
     }
 }
 
-// Back to Top Button
+/* Back to Top Button
 function initBackToTop() {
     const backToTopBtn = document.getElementById('back-to-top');
     
@@ -236,7 +236,7 @@ function initBackToTop() {
             behavior: 'smooth'
         });
     });
-}
+}*/
 
 // Accessibility improvements
 function initAccessibility() {
@@ -509,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
     hideLoadingScreen();
     
     // Initialize components
-    initBackToTop();
+    //initBackToTop();
     const accessibility = initAccessibility();
     
     // Load saved language preference
