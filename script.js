@@ -192,6 +192,17 @@ const translations = {
 
 let currentLang = 'it';
 
+// Smooth scroll function without URL hash
+function scrollToSection(sectionId) {
+    const element = document.getElementById(sectionId);
+    if (element) {
+        element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
+
 function updateLanguage(lang) {
     currentLang = lang;
     document.documentElement.lang = lang;
