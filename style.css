@@ -466,6 +466,43 @@ body {
     font-size: 0.95rem;
 }
 
+/* Tablet-specific fix for email overflow */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .contact-card {
+        padding: 25px 15px;
+        min-height: 220px;
+    }
+    
+    .contact-card p a {
+        font-size: 0.8rem;
+        word-break: break-all;
+        overflow-wrap: break-word;
+        max-width: 100%;
+        display: inline-block;
+    }
+    
+    .contact-card h4 {
+        font-size: 1.1rem;
+    }
+}
+
+/* Tablet landscape specific fix */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+    .contact-card {
+        padding: 20px 12px;
+    }
+    
+    .contact-card p a {
+        font-size: 0.75rem;
+        line-height: 1.2;
+    }
+    
+    .contact-card h4 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+}
+
 .contact-card small {
 color: rgba(255, 255, 255, 0.8);
 font-size: 0.85rem;
